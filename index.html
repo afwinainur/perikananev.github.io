@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasar Iwak</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/pricing/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar bg-dark">
+        <div class="container-fluid">
+            <h1 class="d-flex mx-auto text-white">Perikanan Makmur Jaya</h1>
+        </div>
+    </nav>
+    <div class="container col-xl-8 col-xxl-8 px-2 py-5">
+        <div class="row align-items-center ">
+            <div class="col-md-10 mx-auto col-lg-5">
+                <div id="Page1">
+                    <h1 class="fw-bold text-body-emphasis mb-3 text-nowrap">Daftar Menu Ikan</h1>
+                    <marquee direction="right" scrollamount="5">&#10084; Harga Ikan Bandeng <b>Rp 10.000/KG </b>&#10084;
+                    </marquee>
+                    <marquee direction="right" scrollamount="5">&#10084; Harga Ikan Salmon <b>Rp 15.000/KG </b>&#10084;
+                    </marquee>
+                    <marquee direction="right" scrollamount="5">&#10084; Harga Ikan Gurame <b>Rp 20.000/KG </b>&#10084;
+                    </marquee>
+                    <form class="p-4 p-md-6 border rounded-3 bg-body-tertiary" id="formPage1">
+                        <div class="form-floating mb-3 mt-3 text-secondary">
+                            <input type="text" class="form-control" id="namaPembeli" name="namaPembeli" placeholder=""
+                                required>
+                            <label for="namaPembeli">Nama Lengkap</label>
+                        </div>
+                        <p>Jenis Ikan: </p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="form-check text-start my-2 col">
+                                        <input class="form-check-input col" type="radio" id="iB" name="jenisIkan"
+                                            value="Ikan Bandeng" required>
+                                        <label class="form-check-label" for="iB">
+                                            Ikan Bandeng
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check text-start my-2 pl-2 col">
+                                        <input class="form-check-input col" type="radio" value="Ikan Salmon" id="iS"
+                                            name="jenisIkan" required>
+                                        <label class="form-check-label" for="iS">
+                                            Ikan Salmon
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check text-start my-2 pl-2 col">
+                                        <input class="form-check-input col" type="radio" value="Ikan Gurame" id="iG"
+                                            name="jenisIkan" required>
+                                        <label class="form-check-label" for="iG">
+                                            Ikan Gurame
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="form-floating mb-3 mt-3 text-secondary">
+                            <input type="number" class="form-control" id="jumlahKg" name="jumlahKg" placeholder=""
+                                required>
+                            <label for="jumlahKg">Jumlah (Kg)</label>
+                        </div>
+                        <input type="hidden" id="totalHarga" name="totalHarga">
+                        <a href="#" onclick="return showPage2();"><button class="btn btn-primary w-100 py-2 mt-3"
+                                type="button">Order</button></a>
+                    </form>
+                </div>
+
+                <div id="Page2" style="display:none">
+                    <h1 class="fw-bold text-body-emphasis mb-3 text-nowrap">Daftar Pesanan</h1>
+                    <form class="p-4 p-md-6 border rounded-3 bg-body-tertiary" action="database/order.php" method="post">
+                        <h4 id="namaPembeli1"></h4>
+                        <h4 id="namaPesanan"></h4>
+                        <h4 id="jumlahHargaDisplay"></h4>
+                        <input type="hidden" id="namaPembeliHidden" name="namaPembeli">
+                        <input type="hidden" id="jenisIkanHidden" name="jenisIkan">
+                        <input type="hidden" id="jumlahKgHidden" name="jumlahKg">
+                        <input type="hidden" id="totalHargaHidden" name="totalHarga">
+                        <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Konfirmasi</button>
+                    </form>
+                    <a href="#" onclick="return show('Page1', 'Page2');"><button class="btn btn-primary w-100 py-2 mt-3"
+                            type="button">Kembali</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function show(showId, hideId) {
+            document.getElementById(showId).style.display = 'block';
+            document.getElementById(hideId).style.display = 'none';
+            return false;
+        }
+
+        function showPage2() {
+            var selectedFish = document.querySelector('input[name="jenisIkan"]:checked').value;
+            var jumlahKg = document.getElementById('jumlahKg').value;
+            var namaPembeli = document.getElementById('namaPembeli').value;
+            var hargaPerKg = 0;
+
+            if (selectedFish === 'Ikan Bandeng') {
+                hargaPerKg = 10000;
+            } else if (selectedFish === 'Ikan Salmon') {
+                hargaPerKg = 15000;
+            } else if (selectedFish === 'Ikan Gurame') {
+                hargaPerKg = 20000;
+            }
+
+            var totalHarga = jumlahKg * hargaPerKg;
+
+            document.getElementById('namaPembeli1').innerText = "Nama Pembeli: " + namaPembeli;
+            document.getElementById('namaPesanan').innerText = "Nama Pesanan: " + selectedFish;
+            document.getElementById('jumlahHargaDisplay').innerText = "Jumlah Harga: Rp " + totalHarga;
+
+            document.getElementById('namaPembeliHidden').value = namaPembeli;
+            document.getElementById('jenisIkanHidden').value = selectedFish;
+            document.getElementById('jumlahKgHidden').value = jumlahKg;
+            document.getElementById('totalHargaHidden').value = totalHarga;
+
+            return show('Page2', 'Page1');
+        }
+    </script>
+</body>
+
+</html>
